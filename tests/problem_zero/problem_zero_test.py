@@ -1,5 +1,5 @@
 from collections import defaultdict
-from problems.problem_zero_brute_force import is_square_num, get_prime_factors
+from problems.problem_zero import is_square_num, get_prime_factors
 
 """
 `is_square_num` unit tests
