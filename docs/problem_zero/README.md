@@ -1,5 +1,7 @@
 # Problem Zero - Optimised Solution Algorithmic Complexity Analysis
 
+> ### you can check the brute-force algorithm analysis and implementation in `problem_zero_brute_force_case_study` branch
+
 ## Code Implementation
 * [Optimised Algorithm Implementation](../../problems/problem_zero.py)
 * [problem_zero_test.py](../../tests/problem_zero/problem_zero_test.py)
@@ -7,20 +9,20 @@
 * [Benchmarks](./benchmarks/README.md)
 
 ## Asymptotic Analysis
-The brute-force solution is highly inefficient because it checks each integer sequentially and factors every single number using unoptimized trial division.
+The optimised solution is highly efficient because it eliminates the trial-division prime factorization bottlenecks entirely. Instead, it computes perfect square numbers sequentially and natively on demand.
 
-* **`get_prime_factors(num)`**: In the worst-case scenario (when `num` is prime), the loop must increment the divisor all the way up to `num`, resulting in a time complexity of **$O(\text{num})$**.
-* **`is_square_num(num)`**: Inherits the **$O(\text{num})$** worst-case complexity due to calling the prime factorization step.
-* **`generate_k_square_nums(k)`**: The algorithm tests every integer up to a maximum iteration limit $m$. Because it performs an $O(i)$ factorization check on every integer $i$ from $1$ to $m$, the total workload is the sum of arithmetic progressions ($\sum_{i=1}^{m} i$), yielding an implementation complexity of **$O(m^2)$**.
+* **`generate_square_nums()`**: Generates the perfect square of each integer sequentially using a lazy generator pattern. Each yielded computation performs a single, direct algebraic multiplication, executing in constant time **$O(1)$**.
+* **`generate_k_square_nums(k)`**: Acts as a controller loop that pulls exactly $k$ items from the generator. Because it performs an $O(1)$ step exactly $k$ times, the structural time complexity scales strictly linearly as **$O(k)$**.
 
-Since the $k$-th perfect square occurs exactly at $m = k^2$, we can substitute this into our runtime equation. This means the overall time complexity of this brute-force approach relative to our input $k$ is an aggressive **$O(k^4)$**.
-
-Although the number of squares found grows sub-linearly at a rate of $O(\sqrt{m})$, the algorithm is forced to perform heavy prime factorization math on every single non-square integer it encounters. Thus, the real-world latency is driven entirely by the massive range of the search space rather than the targets found.
+By switching from an iterative search space model to a direct mathematical generation model, the total operations required to find $k$ squares dropped from a staggering $O(k^4)$ down to a lean **$O(k)$**.
 
 ## Conclusion
-According to our definitive execution benchmarks, the algorithm scales terribly under this $O(k^4)$ burden:
-* At `k = 10` ($m = 100$), it completes in **0.318 seconds**.
-* At `k = 100` ($m = 10,000$), it completes in **0.774 seconds**.
-* At `k = 1000` ($m = 1,000,000$), the computation hits the complexity wall, taking **2.25 hours (8,098.075 seconds)** to complete. 
+According to our definitive execution benchmarks, the optimized algorithm scales excellently:
+* At `k = 10` (Max Square: $100$), it completes in **0.321 seconds**.
+* At `k = 100` (Max Square: $10,000$), it completes in **0.488 seconds**.
+* At `k = 1000` (Max Square: $1,000,000$), it completes in **0.363 seconds**. (This is where our original brute-force baseline hit a wall and took over **2.25 hours**).
+* At `k = 10000` (Max Square: $100,000,000$), it completes in **0.447 seconds**.
+* At `k = 100000` (Max Square: $10,000,000,000$), it completes in **0.847 seconds**.
+* At `k = 1000000` (Max Square: $1,000,000,000,000$), it completes in **5.957 seconds**.
 
-This sandbox perfectly illustrates why infrastructure optimizations (like multi-processing) cannot save a program from poor algorithmic complexity.
+This optimization sandbox beautifully demonstrates how addressing core algorithmic complexity solves scale bottlenecks where infrastructure adjustments alone fall short.

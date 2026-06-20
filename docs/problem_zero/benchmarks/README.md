@@ -1,18 +1,24 @@
-### Benchmarked Difference across Input Sizes (`k`)
+### Benchmarked Performance Gains across Input Sizes (`k`)
 
-The [log](#logs) below captures how the execution time of this brute-force algorithm explodes exponentially as the target size `k` grows from 10 to 1000. 
+The logs below capture how the optimized generation algorithm fundamentally eliminates the performance walls found in the original brute-force sandbox. 
 
-While finding the first 10 square numbers takes an already high `0.318s`, scaling to `k = 1000` hits a massive algorithmic wall. Because the search space expands quadratically ($k^2$), finding 1000 square numbers requires evaluating 1,000,000 integers. Combined with increasingly heavy prime factorization loops, the duration spikes from under a second to over **2.25 hours** (`8098.075s`).
+By replacing sequential integer factorization checks with an $O(k)$ direct-generation generator stream, computing $k = 1000$ squares no longer takes **2.25 hours** (`8098.075s`), it completes instantly in **0.363 seconds**. Even when scaling the input workload exponentially to find **1,000,000 perfect squares**, the total execution time stays well under six seconds.
 
-You can see the detailed computation benchmarks (tracked by iteration, individual square number discovery, and total task duration) here:
+Detailed computation logs (tracking performance maps by loop iteration, discrete square number discovery intervals, and total execution cycles) are cataloged below:
 * [When k is 10](./when_k_equals_10/)
 * [When k is 100](./when_k_equals_100/)
 * [When k is 1000](./when_k_equals_1000/)
+* [When k is 10000](./when_k_equals_10000/)
+* [When k is 100000](./when_k_equals_100000/)
+* [When k is 1000000](./when_k_equals_1000000/)
 
-Data visualizations of the square number computation trajectory per iteration:
+Data visualizations of the linear computation trajectory per iteration:
 * [When k is 10](../data_visualisation/charts/when_k_is_10.png)
 * [When k is 100](../data_visualisation/charts/when_k_is_100.png)
 * [When k is 1000](../data_visualisation/charts/when_k_is_1000.png)
+* [When k is 10000](../data_visualisation/charts/when_k_is_10000.png)
+* [When k is 100000](../data_visualisation/charts/when_k_is_100000.png)
+* [When k is 1000000](../data_visualisation/charts/when_k_is_1000000.png)
 
 
 ### Logs
@@ -22,34 +28,67 @@ Data visualizations of the square number computation trajectory per iteration:
 When k = 10
 
 
-Start: 26096.2867909
-Heavy computation in progress in seperate process...
+Start: 111097.0553196
+Heavy but optimised computation in progress...
 Computation completed successfully. Writing benchmarks to file...
-End: 26096.6052864
-Duration: 0.31849549999969895
+End: 111097.3771835
+Duration: 0.32186389999696985
 
 All files saved successfully.
 (.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler> python .\problems\problem_zero.py
 When k = 100
 
 
-Start: 26126.7806489
-Heavy computation in progress in seperate process...
+Start: 111106.616347
+Heavy but optimised computation in progress...
 Computation completed successfully. Writing benchmarks to file...
-End: 26127.5556188
-Duration: 0.7749699000014516
+End: 111107.1051824
+Duration: 0.4888353999995161
 
 All files saved successfully.
 (.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler> python .\problems\problem_zero.py
 When k = 1000
 
 
-Start: 26156.633784
-Heavy computation in progress in seperate process...
+Start: 111174.1187486
+Heavy but optimised computation in progress...
 Computation completed successfully. Writing benchmarks to file...
-End: 34254.7090933
-Duration: 8098.0753092999985
+End: 111174.482117
+Duration: 0.3633684000087669
 
 All files saved successfully.
-(.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler> 
+(.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler> python .\problems\problem_zero.py
+When k = 10000
+
+
+Start: 111285.8601127
+Heavy but optimised computation in progress...
+Computation completed successfully. Writing benchmarks to file...
+End: 111286.3067786
+Duration: 0.44666590000269935
+
+All files saved successfully.
+(.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler> python .\problems\problem_zero.py
+When k = 100000
+
+
+Start: 111301.3935478
+Heavy but optimised computation in progress...
+Computation completed successfully. Writing benchmarks to file...
+End: 111302.2409255
+Duration: 0.8473776999890106
+
+All files saved successfully.
+(.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler> python .\problems\problem_zero.py
+When k = 1000000
+
+
+Start: 111315.9840961
+Heavy but optimised computation in progress...
+Computation completed successfully. Writing benchmarks to file...
+End: 111321.9413636
+Duration: 5.957267499994487
+
+All files saved successfully.
+(.venv) PS C:\Users\HBRAI\Desktop\coding\project_euler>
 ```

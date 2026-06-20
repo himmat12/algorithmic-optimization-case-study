@@ -8,7 +8,10 @@ k = 10
 FILE_LOCATIONS = {
     10 : "when_k_equals_10",
     100 : "when_k_equals_100",
-    1000 : "when_k_equals_1000"
+    1000 : "when_k_equals_1000",
+    10000 : "when_k_equals_10000",
+    100000 : "when_k_equals_100000",
+    1000000 : "when_k_equals_1000000"
 }
 
 def deserialize_file(file_path: str):

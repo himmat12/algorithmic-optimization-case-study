@@ -7,6 +7,7 @@ from collections import defaultdict
 from typing import Any
 from datetime import datetime
 
+# BRUTE-FORCE ALGORITHM
 # this recursive algorithm is not viable while computing massive numbers like 100k
 def get_prime_factors_recur(num: int, divisor: int = 2) -> int:
     if num <= 1:
@@ -17,7 +18,7 @@ def get_prime_factors_recur(num: int, divisor: int = 2) -> int:
     else:
         return get_prime_factors_recur(num, divisor + 1)
 
-
+# BRUTE-FORCE ALGORITHM
 def get_prime_factors(num: int, divisor: int = 2) -> int:
     if num <= 1:
         return []
@@ -34,7 +35,7 @@ def get_prime_factors(num: int, divisor: int = 2) -> int:
         prime_factors.append(divisor)
     return prime_factors
 
-
+# BRUTE-FORCE ALGORITHM
 # this recursive algorithm is not viable while computing massive numbers like 100k
 def is_square_num_recur(num: int) -> bool:
     prime_factors = get_prime_factors(num)
@@ -48,7 +49,21 @@ def is_square_num_recur(num: int) -> bool:
             return False
     return True
 
+# OPTIMISED square number generator
+def generate_square_nums():
+    '''
+    Optimised infinite square number generator.
+    
+    Returns:
+        tuple[int, float]: A tuple containing the generated square number and the performance benchmark start count.
+    '''
+    num = 1
+    while True:
+        start = perf_counter()
+        yield (num * num, start)
+        num += 1
 
+# BRUTE-FORCE ALGORITHM
 def is_square_num(num: int) -> bool:
     prime_factors = get_prime_factors(num)
     factor_freq = defaultdict(int)
@@ -70,41 +85,33 @@ def generate_k_square_nums(k: int) -> tuple[list[int], defaultdict, defaultdict]
     each_iteration_computation_benchmarks["start_time"] = {"start_time": f"{datetime.now()}"}
     each_square_num_computation_benchmarks["start_time"] = {"start_time": f"{datetime.now()}"}
     
-    n = 1
     square_nums = []
-
-    while True:
-        start = perf_counter()
+    for i, res in enumerate(generate_square_nums()):
+        """
+        `end` value is captured right after iteration starts because start is already computed by `generate_square_nums` generator and yielded 
+        therefore in order to benchmrak accurate latency end is right after the iteratation
+        """
+        end = perf_counter() 
+        start = res[1]
+        square_num = res[0]
         if len(square_nums) >= k:
             each_iteration_computation_benchmarks["end_time"] = {"end_time": f"{datetime.now()}"}
             each_square_num_computation_benchmarks["end_time"] = {"end_time": f"{datetime.now()}"}
             break
-        if is_square_num(n):
-            square_nums.append(n)
-            end = perf_counter()
-            each_square_num_computation_benchmarks[n] = {
-                        "square_num": n,
-                        "iteration": n,
+        square_nums.append(square_num)
+        each_square_num_computation_benchmarks[square_num] = {
+                    "square_num": square_num,
+                    "iteration": i,
+                    "square_nums_count": len(square_nums),
+                    "duration": end - start,
+                    "timestamp": f"{datetime.now()}",
+                }
+        each_iteration_computation_benchmarks[i] = {
+                        "iteration": i,
                         "square_nums_count": len(square_nums),
                         "duration": end - start,
                         "timestamp": f"{datetime.now()}",
                     }
-            each_iteration_computation_benchmarks[n] = {
-                            "iteration": n,
-                            "square_nums_count": len(square_nums),
-                            "duration": end - start,
-                            "timestamp": f"{datetime.now()}",
-                        }
-            n += 1
-            continue
-        end = perf_counter()
-        each_iteration_computation_benchmarks[n] = {
-                        "iteration": n,
-                        "square_nums_count": len(square_nums),
-                        "duration": end - start,
-                        "timestamp": f"{datetime.now()}",
-                    }
-        n += 1
     return (square_nums, each_iteration_computation_benchmarks, each_square_num_computation_benchmarks)
 
 def save_iteration_computation_benchmarks_to_file(location, each_iteration_computation_benchmarks):
@@ -149,7 +156,7 @@ def save_problem_zero_computation_benchmarks_to_file(location, benchmarks):
          f.write(']')
 
 
-k = 1000
+k = 1000000
 FILE_LOCATIONS = {
     10 : "when_k_equals_10",
     100 : "when_k_equals_100",
@@ -171,7 +178,7 @@ async def main():
         start = perf_counter()
         problem_zero_computation_benchmark["start_time"] = start
         print(f"Start: {start}")
-        print("Heavy computation in progress in seperate process...")
+        print("Heavy but optimised computation in progress...")
         
         with ProcessPoolExecutor() as pool:
             computation_result= await loop.run_in_executor(pool, generate_k_square_nums, k)
@@ -196,7 +203,6 @@ async def main():
             
         else:
             print("No numbers were generated.")
-            
         
     except KeyboardInterrupt as e:
         print(e)
