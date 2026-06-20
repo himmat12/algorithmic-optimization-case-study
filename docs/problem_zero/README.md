@@ -1,77 +1,26 @@
 # Problem Zero 
 
 ## Code Implementation
-* [problem_zero.py](../problems/problem_zero.py)
-* [problem_zero_test.py](../tests/problem_zero/problem_zero_test.py)
-    * [Test file (square_numbers.txt)](../tests/problem_zero/square_numbers.txt)
-* [problem_zero_computation.json](problem_zero_computation.json)
+* [problem_zero.py](../../problems/problem_zero.py)
+* [problem_zero_test.py](../../tests/problem_zero/problem_zero_test.py)
+    * [Test file (square_numbers.txt)](../../tests/problem_zero/square_numbers.txt)
+* [Benchmarks](./benchmarks/README.md)
 
 ## Asymptotic Analysis
-The brute-force solution is inefficient because it checks each integer one by one and factors each number using trial division.
-get_prime_factors(num) is 
-𝑂
-(
-𝑛
-𝑢
-𝑚
-)
-O(num) worst case.
-is_square_num(num) is also 
-𝑂
-(
-𝑛
-𝑢
-𝑚
-)
-O(num) worst case because it factors the number and counts factor frequencies.
-generate_k_square_nums(k) repeatedly calls is_square_num on increasing values of n, so if the largest checked value is 
-𝑚
-m, the total runtime is 
-𝑂
-(
-𝑚
-2
-)
-O(m
-2
-).
-Since the first k square numbers are about 
-1
-2
-,
-2
-2
-,
-…
-,
-𝑘
-2
-1
-2
-,2
-2
-,…,k
-2
-, the brute-force approach can be approximated as 
-𝑂
-(
-𝑘
-4
-)
-O(k
-4
-) overall.
+The brute-force solution is highly inefficient because it checks each integer sequentially and factors every single number using unoptimized trial division.
 
- ![Squares Found vs Iteration Line Graph](squares_found_vs_iteration_line.png)
+* **`get_prime_factors(num)`**: In the worst-case scenario (when `num` is prime), the loop must increment the divisor all the way up to `num`, resulting in a time complexity of **$O(\text{num})$**.
+* **`is_square_num(num)`**: Inherits the **$O(\text{num})$** worst-case complexity due to calling the prime factorization step.
+* **`generate_k_square_nums(k)`**: The algorithm tests every integer up to a maximum iteration limit $m$. Because it performs an $O(i)$ factorization check on every integer $i$ from $1$ to $m$, the total workload is the sum of arithmetic progressions ($\sum_{i=1}^{m} i$), yielding an implementation complexity of **$O(m^2)$**.
 
- Although the number of matches grows like 
-𝑂
-(
-𝑛
-)
-O(
-n
-), the algorithm still performs work on every integer it tests, so the runtime is driven by the full range of iterations rather than by the smaller number of squares found.
+Since the $k$-th perfect square occurs exactly at $m = k^2$, we can substitute this into our runtime equation. This means the overall time complexity of this brute-force approach relative to our input $k$ is an aggressive **$O(k^4)$**.
+
+Although the number of squares found grows sub-linearly at a rate of $O(\sqrt{m})$, the algorithm is forced to perform heavy prime factorization math on every single non-square integer it encounters. Thus, the real-world latency is driven entirely by the massive range of the search space rather than the targets found.
 
 ## Conclusion
-According to the computation [log](./problem_zero_computation.json), the algorithm took about `144` seconds to reach around `43904` iterations and had found `209` square numbers at that point, which illustrates how costly the brute-force approach becomes as the search range grows.
+According to our definitive execution benchmarks, the algorithm scales terribly under this $O(k^4)$ burden:
+* At `k = 10` ($m = 100$), it completes in **0.318 seconds**.
+* At `k = 100` ($m = 10,000$), it completes in **0.774 seconds**.
+* At `k = 1000` ($m = 1,000,000$), the computation hits the complexity wall, taking **2.25 hours (8,098.075 seconds)** to complete. 
+
+This sandbox perfectly illustrates why infrastructure optimizations (like multi-processing) cannot save a program from poor algorithmic complexity.
