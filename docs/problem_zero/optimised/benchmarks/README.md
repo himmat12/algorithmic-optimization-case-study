@@ -1,6 +1,6 @@
 ### Benchmarked Performance Gains across Input Sizes (`k`)
 
-The logs below capture how the optimized generation algorithm fundamentally eliminates the performance walls found in the original brute-force sandbox. 
+The [logs](#logs) below capture how the optimized generation algorithm fundamentally eliminates the performance walls found in the original brute-force sandbox. 
 
 By replacing sequential integer factorization checks with an $O(k)$ direct-generation generator stream, computing $k = 1000$ squares no longer takes **2.25 hours** (`8098.075s`), it completes instantly in **0.363 seconds**. Even when scaling the input workload exponentially to find **1,000,000 perfect squares**, the total execution time stays well under six seconds.
 

@@ -1,53 +1,9 @@
 import asyncio
 from concurrent.futures import ProcessPoolExecutor
 import json
-from math import sqrt
 from time import perf_counter
 from collections import defaultdict
-from typing import Any
 from datetime import datetime
-
-# BRUTE-FORCE ALGORITHM
-# this recursive algorithm is not viable while computing massive numbers like 100k
-def get_prime_factors_recur(num: int, divisor: int = 2) -> int:
-    if num <= 1:
-        return []
-
-    if num % divisor == 0:
-        return [divisor] + get_prime_factors_recur(num // divisor, divisor)
-    else:
-        return get_prime_factors_recur(num, divisor + 1)
-
-# BRUTE-FORCE ALGORITHM
-def get_prime_factors(num: int, divisor: int = 2) -> int:
-    if num <= 1:
-        return []
-
-    prime_factors = []
-    current_factor = num
-    while True:
-        if current_factor == 1:
-            break
-        if current_factor % divisor != 0:
-            divisor += 1
-            continue
-        current_factor = current_factor // divisor
-        prime_factors.append(divisor)
-    return prime_factors
-
-# BRUTE-FORCE ALGORITHM
-# this recursive algorithm is not viable while computing massive numbers like 100k
-def is_square_num_recur(num: int) -> bool:
-    prime_factors = get_prime_factors(num)
-    prime_factors_freq = defaultdict(int)
-
-    for factor in prime_factors:
-        prime_factors_freq[factor] += 1
-
-    for value in prime_factors_freq.values():
-        if value % 2 != 0:
-            return False
-    return True
 
 # OPTIMISED square number generator
 def generate_square_nums():
@@ -62,21 +18,6 @@ def generate_square_nums():
         start = perf_counter()
         yield (num * num, start)
         num += 1
-
-# BRUTE-FORCE ALGORITHM
-def is_square_num(num: int) -> bool:
-    prime_factors = get_prime_factors(num)
-    factor_freq = defaultdict(int)
-
-    for factor in prime_factors:
-        factor_freq[factor] += 1
-
-    for freq in factor_freq.values():
-        if freq % 2 != 0:
-            return False
-        continue
-    return True
-
 
 def generate_k_square_nums(k: int) -> tuple[list[int], defaultdict, defaultdict]:
     each_iteration_computation_benchmarks = defaultdict()

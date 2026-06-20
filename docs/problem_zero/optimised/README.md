@@ -1,11 +1,11 @@
 # Problem Zero - Optimised Solution Algorithmic Complexity Analysis
 
-> ### you can check the brute-force algorithm analysis and implementation in `problem_zero_brute_force_case_study` branch
+> ### You can check the Brute-Force algorithm analysis and implementation [here](../brute_force/README.md).
 
 ## Code Implementation
-* [Optimised Algorithm Implementation](../../problems/problem_zero.py)
-* [problem_zero_test.py](../../tests/problem_zero/problem_zero_test.py)
-    * [Test file (square_numbers.txt)](../../tests/problem_zero/square_numbers.txt)
+* [Optimised Algorithm Implementation](../../../problems/problem_zero/problem_zero_optimised.py)
+* [problem_zero_optimised_test.py](../../../tests/problem_zero/problem_zero_optimised_test.py)
+    * [Test file (square_numbers.txt)](../../../tests/problem_zero/square_numbers.txt)
 * [Benchmarks](./benchmarks/README.md)
 
 ## Asymptotic Analysis

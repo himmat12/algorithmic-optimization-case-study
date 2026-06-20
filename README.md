@@ -4,4 +4,5 @@ Project Euler Playground is a personal initiative and problem solving playground
 > Once a wise man said "Bang your head to wall trying to solve complicated problems, but NO doom scrolling". Hence, it seems like this guy took his advice seriously.
 
 ### Table of contents
-* [Problem Zero - Optimised Algorithmic Complexity Case Study](docs/problem_zero/README.md)
+* [Problem Zero - Brute-Force Algorithmic Complexity Case Study](docs/problem_zero/brute_force/README.md)
+* [Problem Zero - Optimised Algorithmic Complexity Case Study](docs/problem_zero/optimised/README.md)
